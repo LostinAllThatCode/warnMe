@@ -1,0 +1,10 @@
+## Interface: 11200
+## Title: warn|cff9e42f5Me|r
+## Author: Ndru
+## Version: 0.0.0.1
+## Notes: Warns you about pvp flagged party members, targets and yourself. Also warns you about 'elite' mobs.
+## DefaultState: enabled
+## LoadOnDemand: 0
+## SavedVariables: warnMe_config
+
+warnMe.lua
