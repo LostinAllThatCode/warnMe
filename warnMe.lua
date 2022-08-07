@@ -33,7 +33,7 @@ function ShowAlert(message, console)
     warnMe.alert_t = 5
     warnMe.label:SetText(message)
     if(console == true) then
-        DEFAULT_CHAT_FRAME:AddMessage("|cff9e42f5warnMe|r: " .. message)
+        DEFAULT_CHAT_FRAME:AddMessage("|cff9e42f5<warnMe>|r " .. message)
     end
 
     if(not warnMe.label:IsShown()) then 
@@ -46,7 +46,7 @@ warnMe:SetScript("OnEvent", function()
     if(event == "ADDON_LOADED")
 	then
         if(arg1 == "warnMe") then
-            DEFAULT_CHAT_FRAME:AddMessage("|cff9e42f5warnMe|r: Addon loaded.")
+            DEFAULT_CHAT_FRAME:AddMessage("|cff9e42f5<warnMe>|r Addon loaded.")
         end
     elseif(event == "PLAYER_TARGET_CHANGED" and arg1 == nil) then
         if(warnMe_config["warn_if_target_is_pvp"]) then
@@ -107,35 +107,29 @@ warnMe:SetScript("OnUpdate", function()
                     state = state .. "P" .. tostring(i)
                 end
             end
-        
+
             --- notifiy flagged players
             if(is_player_flagged or is_party_flagged) then
                 if(warnMe.state ~= state) then
                     warnMe.state = state
 
                     PlaySound(warnMe_config["sound"])
-            
+                    
+                    local message = "PvP flagged players: "
                     if(is_player_flagged) then
-                        DEFAULT_CHAT_FRAME:AddMessage("|cff9e42f5warnMe|r: |cff42f5a7YOU|r are PVP flagged!")
+                        message = message .. "|cff42f5a7YOU|r "                        
                     end
             
                     if(is_party_flagged) then
                         local marked = ""
                         local num_marked = table.getn(pvp_tagged_party_members)
                         for k,v in pairs(pvp_tagged_party_members) do
-                            if(k > 1 and k == num_marked) then
-                                marked = marked .. " and "
-                            elseif(k > 1) then
-                                marked = marked .. ", "
-                            end
-                            marked =  marked .. "|cff42f5a7" .. v .. "|r"
+                            message = message .. "|cfff542a7"..v.."|r "
                         end
+                    end
 
-                        if(num_marked > 1) then
-                            DEFAULT_CHAT_FRAME:AddMessage("|cff9e42f5warnMe|r: Your party members ".. marked .." are PVP flagged!")
-                        else
-                            DEFAULT_CHAT_FRAME:AddMessage("|cff9e42f5warnMe|r: Your party member ".. marked .." is PVP flagged!")
-                        end
+                    if(message ~= "") then
+                        ShowAlert(message, true)
                     end
                 end
             end
